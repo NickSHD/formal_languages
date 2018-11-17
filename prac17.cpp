@@ -137,33 +137,60 @@ int main() {
 
     for (int i = 0; i < a.size(); i++) {
         if (a[i] == '.') {
+            if (stack_reg.empty()) {
+                cout << "error";
+                return 0;
+            }
             reverseNFA second = stack_reg.back();
             stack_reg.pop_back();
 
+            if (stack_reg.empty()) {
+                cout << "error";
+                return 0;
+            }
             reverseNFA first = stack_reg.back();
             stack_reg.pop_back();
 
             stack_reg.push_back(first * second);
         }
         else if (a[i] == '+') {
+            if (stack_reg.empty()) {
+                cout << "error";
+                return 0;
+            }
             reverseNFA second = stack_reg.back();
             stack_reg.pop_back();
 
+            if (stack_reg.empty()) {
+                cout << "error";
+                return 0;
+            }
             reverseNFA first = stack_reg.back();
             stack_reg.pop_back();
 
             stack_reg.push_back(first + second);
         }
         else if (a[i] == '*') {
+            if (stack_reg.empty()) {
+                cout << "error";
+                return 0;
+            }
             reverseNFA temp = stack_reg.back();
             stack_reg.pop_back();
 
             stack_reg.push_back(temp.klini());
         }
         else {
-            stack_reg.push_back(reverseNFA(a[i]));
+            if (('a' <= a[i] && a[i] <= 'c') || a[i] == '1')
+                stack_reg.push_back(reverseNFA(a[i]));
         }
     }
+
+    if (stack_reg.size() != 1) {
+        cout << "error";
+        return 0;
+    }
+
 
     cout << stack_reg.back().find_max_suff(u);
 
